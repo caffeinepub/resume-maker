@@ -1,0 +1,102 @@
+{
+  "kind": "build_request",
+  "title": "Enable live resume preview and remove Submit-to-Preview flow",
+  "projectName": "Resume Maker",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Remove the manual “Submit to Preview” interaction from the Resume Editor page UI, including removing the button and updating any helper/instructional text that references submitting to see the preview.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-6"
+        ],
+        "quotes": [
+          "submit to preview button is not required, once the user fills the information resume preview should be shown automatically",
+          "preview update live as the user types, apply to all resume sections, removed completely"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The Resume Editor page no longer renders a \"Submit to Preview\" button (and no longer imports/uses the Send icon for that control).",
+        "The Resume Editor page no longer displays copy telling the user to click submit to see the preview.",
+        "No other editor actions require a submit step to make the preview update."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Change the resume preview panel on the Resume Editor page to render the current in-progress resume data live as the user types across all sections (personal info, headline, links, summary, skills, experience, projects, education, certifications).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-6"
+        ],
+        "quotes": [
+          "submit to preview button is not required, once the user fills the information resume preview should be shown automatically",
+          "preview update live as the user types, apply to all resume sections, removed completely"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Typing in any editor input (including repeatable sections like Experience/Education/Projects) updates the preview panel immediately without requiring any button click.",
+        "Changing the selected resume font updates the preview panel immediately.",
+        "Skills and certifications continue to behave as implemented (local textarea state while typing) while the preview reflects the stored draft data updates (e.g., updates on blur and via keyword insertion)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Update the Full Preview & Download page to display the same live, current resume data that the user is editing (so it matches the editor preview), and ensure PDF download uses that current data.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-6"
+        ],
+        "quotes": [
+          "once the user fills the information resume preview should be shown automatically",
+          "preview update live as the user types, apply to all resume sections, removed completely"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigating to \"/preview\" shows the current in-progress resume content (not a stale snapshot requiring submit).",
+        "Downloading the PDF reflects the currently displayed preview content.",
+        "No manual submit step is required for the \"/preview\" page to show the latest edits."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Remove or refactor any state/store logic that depends on a separate “submitted resume” snapshot for preview rendering (including the submit-and-reset behavior), so that preview rendering is driven by the draft/in-progress resume data.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-6"
+        ],
+        "quotes": [
+          "removed completely",
+          "preview update live as the user types"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app no longer requires calling a submit action to populate preview data.",
+        "No code path clears editor data as part of updating preview (since preview is live).",
+        "App continues to load persisted resume data and normalization/rehydration logic continues to work without runtime errors."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under frontend/src/components/ui (shadcn components) directly; compose them instead.",
+    "Do not modify immutable hook files: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx.",
+    "Keep all user-facing text in English."
+  ],
+  "nonGoals": [
+    "Adding new resume templates or changing template rendering/design beyond what is necessary to support live preview.",
+    "Backend changes (Motoko canister changes) or storing resumes on-chain.",
+    "Adding new authentication providers beyond existing Internet Identity wiring."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

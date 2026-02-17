@@ -1,0 +1,78 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T10:58:49.280Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 4,
+    "implemented": 4,
+    "items": [
+      {
+        "id": "REQ-1",
+        "summary": "Remove the manual “Submit to Preview” interaction from the Resume Editor page UI, including removing the button and updating any helper/instructional text that references submitting to see the preview.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/ResumeEditorPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/ResumeEditorPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Change the resume preview panel on the Resume Editor page to render the current in-progress resume data live as the user types across all sections (personal info, headline, links, summary, skills, experience, projects, education, certifications).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/ResumeEditorPage.tsx",
+          "frontend/src/features/editor/ResumeEditorForm.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/ResumeEditorPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Update the Full Preview & Download page to display the same live, current resume data that the user is editing (so it matches the editor preview), and ensure PDF download uses that current data.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/ResumePreviewPage.tsx",
+          "frontend/src/features/export/pdfExport.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/ResumePreviewPage.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Remove or refactor any state/store logic that depends on a separate “submitted resume” snapshot for preview rendering (including the submit-and-reset behavior), so that preview rendering is driven by the draft/in-progress resume data.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/state/resumeStore.ts",
+          "frontend/src/pages/ResumeEditorPage.tsx",
+          "frontend/src/pages/ResumePreviewPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/state/resumeStore.ts",
+          "frontend/src/pages/ResumeEditorPage.tsx",
+          "frontend/src/pages/ResumePreviewPage.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/pages/ResumeEditorPage.tsx",
+    "frontend/src/pages/ResumePreviewPage.tsx",
+    "frontend/src/state/resumeStore.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T10:58:49.277Z",
+  "summary": "Diff removes the Submit-to-Preview UI and switches both the editor-side preview panel and /preview page to render from draftResumeData with the selected resumeFont. Zustand store appears refactored away from a submitted snapshot, but the diff does not show changes inside ResumeEditorForm to guarantee that all inputs update draft state live while typing (and file summary suggests otherwise for at least some fields).",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "Typing in any editor input updates the preview panel immediately across all sections (including repeatable sections), without requiring any button click; and skills/certifications keep their local-typing behavior while preview reflects stored draft updates.",
+      "reason": "The diff does not include any changes to the editor form implementation (ResumeEditorForm) that would ensure onChange updates to draftResumeData for all fields while typing. Additionally, the provided frontend file summary explicitly claims the form still uses a model where editing does not affect preview until submit, which conflicts with the requirement.",
+      "evidence": [
+        "frontend-file-summaries.txt (truncated): \"frontend/src/features/editor/ResumeEditorForm.tsx\": \"...binds all inputs to draftResumeData for editing without affecting preview until submit.\"",
+        "frontend/src/pages/ResumeEditorPage.tsx (renders preview from draftResumeData but contains no wiring for live updates from inputs)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Introduced a resizable split-pane layout for the editor/preview using ResizablePanelGroup/ResizablePanel/ResizableHandle.",
+      "reason": "The BuildRequest did not ask for resizable panels or layout changes beyond removing submit flow and enabling live preview.",
+      "evidence": [
+        "frontend/src/pages/ResumeEditorPage.tsx"
+      ]
+    },
+    {
+      "description": "Added/expanded store-side data hygiene utilities (normalizeCertifications, healSectionOrder auto-merge, cleanEducationData removing GPA) beyond the live-preview submit-flow refactor.",
+      "reason": "The BuildRequest focuses on removing the submit snapshot and making preview live; it does not request new persistence healing/normalization behaviors (except continuing to work).",
+      "evidence": [
+        "frontend/src/state/resumeStore.ts (truncated): functions normalizeCertifications, healSectionOrder, cleanEducationData"
+      ]
+    }
+  ],
+  "confidence": 0.62,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/pages/ResumeEditorPage.tsx",
+    "frontend/src/pages/ResumePreviewPage.tsx",
+    "frontend/src/state/resumeStore.ts",
+    "project_state.json"
+  ]
+}

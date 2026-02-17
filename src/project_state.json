@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Resume builder: implement live resume preview that updates as the user types across all sections, removing the need for a manual submit-to-preview action.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-remove-the-manual-submit-to-preview-interaction-from-the-resume-editor-page-ui-including-removing-the-button-and-updating-any-helper-instructional-text-that-references-submitting-to-see-the-preview",
+      "title": "Remove the manual “Submit to Preview” interaction from the Resume Editor page UI, including removing the button and updating any helper/instructional text that references submitting to see the preview.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-change-the-resume-preview-panel-on-the-resume-editor-page-to-render-the-current-in-progress-resume-data-live-as-the-user-types-across-all-sections-personal-info-headline-links-summary-skills-experience-projects-education-certifications",
+      "title": "Change the resume preview panel on the Resume Editor page to render the current in-progress resume data live as the user types across all sections (personal info, headline, links, summary, skills, experience, projects, education, certifications).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-full-preview-download-page-to-display-the-same-live-current-resume-data-that-the-user-is-editing-so-it-matches-the-editor-preview-and-ensure-pdf-download-uses-that-current-data",
+      "title": "Update the Full Preview & Download page to display the same live, current resume data that the user is editing (so it matches the editor preview), and ensure PDF download uses that current data.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-or-refactor-any-state-store-logic-that-depends-on-a-separate-submitted-resume-snapshot-for-preview-rendering-including-the-submit-and-reset-behavior-so-that-preview-rendering-is-driven-by-the-draft-in-progress-resume-data",
+      "title": "Remove or refactor any state/store logic that depends on a separate “submitted resume” snapshot for preview rendering (including the submit-and-reset behavior), so that preview rendering is driven by the draft/in-progress resume data.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Enable live resume preview that updates as the user types across all sections and remove the 'submit to preview' button entirely.",
+      "reqIds": [],
+      "status": "in_progress"
+    }
+  ],
+  "projectName": "Resume Maker",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

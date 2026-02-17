@@ -1,0 +1,91 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Live resume preview driven by draft state (remove Submit-to-Preview flow)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Remove the manual “Submit to Preview” UI and any related instructional copy from the Resume Editor page.",
+      "acceptanceCriteria": [
+        "The Resume Editor page no longer renders a \"Submit to Preview\" button (and no longer imports/uses the Send icon for that control).",
+        "The Resume Editor page no longer displays copy telling the user to click submit to see the preview.",
+        "No other editor actions require a submit step to make the preview update."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ResumeEditorPage.tsx",
+          "operation": "modify",
+          "description": "Remove the Submit-to-Preview button and its handler, drop the lucide Send icon import, and update helper/instructional text so it describes live preview (no submit step). Continue composing existing shadcn/ui components (do not modify files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Render the editor preview panel from the in-progress draft resume data and keep preview updates live across all sections and font changes.",
+      "acceptanceCriteria": [
+        "Typing in any editor input (including repeatable sections like Experience/Education/Projects) updates the preview panel immediately without requiring any button click.",
+        "Changing the selected resume font updates the preview panel immediately.",
+        "Skills and certifications continue to behave as implemented (local textarea state while typing) while the preview reflects the stored draft data updates (e.g., updates on blur and via keyword insertion)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ResumeEditorPage.tsx",
+          "operation": "modify",
+          "description": "Switch the preview panel rendering to use draft/in-progress resume data from the store (instead of any submitted snapshot) so all onChange-driven updates in ResumeEditorForm re-render the preview immediately. Keep font binding to resumeFont so font changes reflect instantly. Continue composing existing shadcn/ui components (do not modify files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/editor/ResumeEditorForm.tsx",
+          "operation": "modify",
+          "description": "Confirm store update calls are onChange for all non-textarea-local fields (personal info, headline, links, summary, repeatable sections) so draft state updates live; keep skills/certifications textarea local state behavior and ensure updates to draft state still occur on blur and keyword insertion as currently implemented. Continue composing existing shadcn/ui components (do not modify files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Make the Full Preview & Download page display the current draft resume data and generate PDFs from that same current preview.",
+      "acceptanceCriteria": [
+        "Navigating to \"/preview\" shows the current in-progress resume content (not a stale snapshot requiring submit).",
+        "Downloading the PDF reflects the currently displayed preview content.",
+        "No manual submit step is required for the \"/preview\" page to show the latest edits."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/ResumePreviewPage.tsx",
+          "operation": "modify",
+          "description": "Render the preview using the store's draft/in-progress resume data (and resumeFont) so the page always reflects the latest edits without any submit step. Generate the PDF filename from the same draft data used for rendering, and continue to pass the currently rendered DOM node to the PDF utility. Continue composing existing shadcn/ui components (do not modify files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/export/pdfExport.ts",
+          "operation": "modify",
+          "description": "Adjust PDF export flow only if needed to ensure it prints exactly what is currently rendered in the preview container passed in (no dependency on any submitted snapshot). Keep user-facing text/errors in English."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Remove/refactor store/state logic that depends on a separate submitted-resume snapshot, so previews are driven by draft data while persistence/rehydration remains stable.",
+      "acceptanceCriteria": [
+        "The app no longer requires calling a submit action to populate preview data.",
+        "No code path clears editor data as part of updating preview (since preview is live).",
+        "App continues to load persisted resume data and normalization/rehydration logic continues to work without runtime errors."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/state/resumeStore.ts",
+          "operation": "modify",
+          "description": "Refactor the Zustand store to eliminate reliance on a separate submittedResumeData snapshot and the submitAndReset behavior that clears draft data. Ensure the persisted state rehydration/migration safely handles any legacy stored submittedResumeData (without runtime errors) and keeps existing normalization/rehydration logic working for draft data (skills/certifications/education cleanup and section order healing)."
+        },
+        {
+          "path": "frontend/src/pages/ResumeEditorPage.tsx",
+          "operation": "modify",
+          "description": "Update store selectors/usages to match the refactored store (remove submitted snapshot + submit action usage), ensuring no path clears editor data as part of preview updates. Continue composing existing shadcn/ui components (do not modify files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/ResumePreviewPage.tsx",
+          "operation": "modify",
+          "description": "Update store selectors/usages to match the refactored store (remove submitted snapshot usage) so /preview always reflects draft data. Continue composing existing shadcn/ui components (do not modify files under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}
